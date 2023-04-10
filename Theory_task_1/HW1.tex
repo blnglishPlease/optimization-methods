@@ -1,0 +1,97 @@
+\documentclass{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[russian]{babel}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,amsbsy,amstext,amscd,amsxtra,multicol}
+\usepackage{verbatim}
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[colorlinks,urlcolor=blue]{hyperref}
+\usepackage[stable]{footmisc}
+\usepackage{ dsfont }
+\usepackage{wrapfig}
+\usepackage{xparse}
+\usepackage{ifthen}
+\usepackage{bm}
+\usepackage{color}
+%\usepackage{subfigure}
+\usepackage{subcaption}
+\usepackage{indentfirst}
+\usepackage{enumitem}
+
+
+\usepackage{xcolor}
+\usepackage{hyperref}
+\definecolor{linkcolor}{HTML}{799B03} % цвет гиперссылок
+\definecolor{urlcolor}{HTML}{799B03} % цвет гиперссылок
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{HW1: выпуклые множества, матричное дифференцирование, выпуклые функции}
+\author{Семинарист: Курузов Илья}
+\date{Дедлайн: 23:59, 26.09.2020}
+
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator{\quartile}{quartile}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+\section{Выпуклые множества}
+
+    \item Пусть множество $S\subset \mathbb{R}^n$ выпукло, $\|\cdot\|$ есть норма в $\mathbb{R}^n$, $a > 0$ - некоторое положительное число.
+    \begin{enumerate}[label=\alph*)]
+        \item $[1]$ Определим расширение множества $S$, как $$S_a = \left\{\textbf{x}\in \mathbb{R}^n\Big| \dist(\textbf{x},S)\leq a \right\}.$$ Напомним, что расстояние от точки до множества определяется как $\dist(\textbf{x}, S)=\text{inf}_\mathbf{y}\|\mathbf{x}-\mathbf{y}\|$. Докажите, что $S_a$ является выпуклым.
+        \item $[2]$ Определим сужение множества $S$, как $$S_{-a}=\left\{\textbf{x}\in \mathbb{R}^n\Big| B_{a,\|\cdot\|}(\textbf{x}) \subseteq S\right\},$$
+        где $B_{a,\|\cdot\|}(\textbf{x})$ - замкнутый шар с центром в $\textbf{x}$ и радиусом $a$ по норме $\|\cdot\|$. Докажите, что $S_{-a}$ выпукло.
+    \end{enumerate}
+    
+    \item $[2]$ Функция $f:X\rightarrow \mathbb{R}$, где $X$ есть некоторое линейное пространство, называется квази-выпуклой, если $\forall \alpha\in[0,1], \forall \mathbf{x}_1,\mathbf{x}_2\in X$ выполнено $$f(\alpha\mathbf{x}_1+(1-\alpha)\mathbf{x}_2)\leq \max(f(\mathbf{x}_1),f(\mathbf{x}_2)).$$
+    Определим множество подуровня функции $f$: $L_c=\left\{\mathbf{x}\in X \Big| f(\mathbf{x})\leq c\right\}$. Докажите, что множество $L_c$ является выпуклым для любого $c\in\mathbb{R}$ тогда и только тогда, когда $f$ - квази-выпуклая функция.
+    
+    \item $[2]$ Пусть $K\subseteq \mathbb{R}^n_+$ есть конус. Докажите, что $K$ - выпуклый конус тогла и только тогда, когда множество $\{\mathbf{x}\in K | \sum\limits_{i=1}^n x_i=1\}$ есть выпуклое множество.
+
+
+    
+\section{Матричное дифференцирование}
+
+Постарайтесь представить ответы в следующих номерах в матричном виде.
+
+    \item $[3]$ Пусть дана некоторая последовательность $\{\mathbf{x}_k\}_{k=1}^N \subset \mathbb{R}^n$ и некоторый постоянный вектор $\mathbf{y}_0\in \mathbb{R}^m$. Рассмотрим следующую рекурсивную модель:
+    $$\textbf{y}_j(W, V, \mathbf{b}) = \sigma\left(W\mathbf{x}_j + V\mathbf{y}_{j-1} + \mathbf{b}\right), j=\overline{1,N}$$
+    в которой $W\in \mathbb{R}^{m\times n}$, $V\in \mathbb{R}^{m\times m}$ и $\mathbf{b}\in \mathbb{R}^{m}$ есть параметры модели, $\sigma(x)=\frac{1}{1+e^{-x}}$ есть сигмоида (к вектору данная функция применяется поэлементно $[\sigma(\mathbf{x})]_i=\sigma(x_i)$). Рассмотрим функцию:
+    $$f(W, V, \mathbf{b})=\|\mathbf{y}_N - \mathbf{Y}\|_2^2,$$
+    где $\mathbf{Y}\in\mathbb{R}^m$ есть некоторый константный вектор.
+    
+    Найдите градиенты функции $f$ по $W, V, \mathbf{b}$, как функцию, зависящую только от этих параметров, $\mathbf{x}_n$, $\mathbf{y}_n$ и градиента от $\mathbf{y}_{n-1}$ по этим параметрам.
+    
+    Для упрощения записи может помочь $\sigma'(x) = \sigma(x)(1-\sigma(x))$. Для обозначения поэлементного матричного умножения (произведение Адамара) используйте символ $\circ$ ($\backslash$circ).
+    
+    \item $[2]$ Пусть $Y\in \mathbb{R}^{m\times n}$, $U\in \mathbb{R}^{m\times k}$, $V\in \mathbb{R}^{k\times n}$. Найдите градиенты по $U$ и $V$ следующей функции
+    $$J(U, V) = \|UV - Y\|^2_F + \frac{\lambda}{2}\left(\|U\|^2_F + \|V\|^2_F\right),$$
+    где $\|\cdot\|_F$ есть норма Фробениуса для матриц.
+    
+    \item $[2]$ Найдите градиент и гессиан по параметру $\textbf{w}\in\mathbb{R}^n$ функции $f(\mathbf{w}) = \ln\left(1+\langle\mathbf{x}, \mathbf{w}\rangle\right)$ для постоянного вектора $\mathbf{x}$.
+    
+\section{Выпуклые функции}
+    
+    \item $[3]$ Функция $f(x, t) = -\ln\left(t^2 - \textbf{x}^\top \textbf{x}\right)$,
+    определённая на множестве $E = \left\{(\textbf{x}, t) \in \mathbb{R}^{n+1} \Big| \|\textbf{x}\|_2 < t\right\}$ называется логарифмическим барьером для конуса второго порядка. Она используется при переходе от условной оптимизации с ограничением на конус второго порядка к безусловной с помощью введения штрафа за выход из этого конуса. Поэтому такие функции называются барьерными. Докажите, что функция f выпукла.
+    
+    \item $[2]$ Докажите, что функция $f(\mathbf{x})=\left(\sum\limits_{i=1}^n x_i^p\right)^{\frac{1}{p}}$ является вогнутой на $\mathbb{R}^n_{++}$ для любого $p<1, p\neq 0$.
+    
+    \item $[2]$ Докажите, что функция $f(X)=(\text{det}X)^{\frac{1}{n}}$ является вогнутой на множестве $\mathbb{S}^n_{++}$.
+    
+    \item Пусть величина $x$ есть вещественная случайная величина, принимающая вещественные значения $a_1\dots a_n\in \mathbb{R}, a_1\leq\dots\leq a_n $ с вероятностями $p_1\dots p_n$ соответсвенно. Пусть $P=\left\{\textbf{p}\in \mathbb{R}^n_+\Big| \sum_k p_k = 1\right\}$ есть $n$-мерный симплекс, т.е. все возможные вероятностные распределения для величины с $n$ значениями. Являются следующие функции, как функции от $\textbf{p}$, выпуклыми/вогнутыми?
+    \begin{enumerate}
+        \item $[1]$ $\mathbb{E}x$
+        \item $[1]$ $\var(x^2)$
+    \end{enumerate}
+\end{enumerate}
+
+
+\end{document}
